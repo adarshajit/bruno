@@ -22,6 +22,7 @@ const QueryUrl = ({ item, collection, handleRun }) => {
   const saveShortcut = isMac ? 'Cmd + S' : 'Ctrl + S';
   const editorRef = useRef(null);
   const isGrpc = item.type === 'grpc-request';
+  const isLoading = ['queued', 'sending'].includes(item.requestState);
 
   const [methodSelectorWidth, setMethodSelectorWidth] = useState(90);
   const [generateCodeItemModalOpen, setGenerateCodeItemModalOpen] = useState(false);
@@ -112,7 +113,11 @@ const QueryUrl = ({ item, collection, handleRun }) => {
           highlightPathParams={true}
           item={item}
         />
-        <div className="flex items-center h-full mr-2 cursor-pointer" id="send-request" onClick={handleRun}>
+        <div
+          className={`flex items-center h-full mr-2 ${isLoading ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}
+          id="send-request"
+          onClick={handleRun}
+        >
           <div
             title="Generate Code"
             className="infotip mr-3"
